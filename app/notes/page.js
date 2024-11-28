@@ -1,5 +1,3 @@
-'use client'
-
 import Link from 'next/link';
 import HomeIcon from '@mui/icons-material/Home';
 import ListIcon from '@mui/icons-material/List';
@@ -7,7 +5,7 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import { useUser, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { AppBar, Box, Button, Container, Toolbar, Typography } from "@mui/material";
 
-export default function Home() {
+export default function Notes() {
   return (
     <Box>
       <AppBar position="static">
