@@ -1,15 +1,23 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import HomeIcon from '@mui/icons-material/Home';
+import ListIcon from '@mui/icons-material/List';
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import { useUser, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import {
+  AppBar,
   Box,
-  TextField,
   Button,
+  Container,
+  Toolbar,
+  Typography,
+  TextField,
   List,
   ListItem,
   ListItemText,
   IconButton,
-  Typography,
   Select,
   MenuItem,
   FormControl,
@@ -81,96 +89,129 @@ export default function TodoList() {
   };
 
   return (
-    <Box sx={{ p: 2, maxWidth: 600, mx: 'auto' }}>
-      <Typography variant="h4" gutterBottom>
-        To-Do List
-      </Typography>
-      <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
-        <TextField
-          label="New Task"
-          value={newTask}
-          onChange={(e) => setNewTask(e.target.value)}
-          fullWidth
-        />
-        <FormControl sx={{ minWidth: 120 }}>
-          <InputLabel>Priority</InputLabel>
-          <Select
-            value={priority}
-            onChange={(e) => setPriority(e.target.value)}
-            label="Priority"
-          >
-            <MenuItem value="high">High</MenuItem>
-            <MenuItem value="medium">Medium</MenuItem>
-            <MenuItem value="low">Low</MenuItem>
-          </Select>
-        </FormControl>
-        <Button variant="contained" onClick={handleAddTask}>
-          Add
-        </Button>
-      </Box>
-      <Box sx={{ mb: 2 }}>
-        <FormControl sx={{ minWidth: 150 }}>
-          <InputLabel>Filter</InputLabel>
-          <Select
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-            label="Filter"
-          >
-            <MenuItem value="all">All</MenuItem>
-            <MenuItem value="completed">Completed</MenuItem>
-            <MenuItem value="incomplete">Incomplete</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
-      <List>
-        {filteredTasks.map((task, index) => (
-          <ListItem
-            key={index}
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              bgcolor: priorityColors[task.priority],
-              mb: 1,
-              borderRadius: 1,
-              color: 'white',
-            }}
-          >
-            {editingIndex === index ? (
-              <Box sx={{ display: 'flex', gap: 1, flex: 1 }}>
-                <TextField
-                  value={editingTask}
-                  onChange={(e) => setEditingTask(e.target.value)}
-                  fullWidth
-                />
-                <IconButton onClick={handleSaveEdit}>
-                  <Check />
-                </IconButton>
-              </Box>
-            ) : (
-              <>
-                <ListItemText
-                  primary={task.text}
-                  secondary={`Priority: ${task.priority}`}
-                  sx={{
-                    textDecoration: task.completed ? 'line-through' : 'none',
-                  }}
-                />
-                <Box>
-                  <IconButton onClick={() => handleToggleComplete(index)}>
-                    {task.completed ? <Close /> : <Check />}
-                  </IconButton>
-                  <IconButton onClick={() => handleEditTask(index)}>
-                    <Edit />
-                  </IconButton>
-                  <IconButton onClick={() => handleDeleteTask(index)}>
-                    <Delete />
+    <Box>
+      {/* Navigation Bar */}
+      <AppBar position="static">
+        <Container maxWidth="lg">
+          <Toolbar>
+            <Box display="flex" alignItems="center" sx={{ flexGrow: 1 }}>
+              <Typography variant="h6">Zotmate - Digital Assistant for UCI</Typography>
+              <Button color="inherit" component={Link} href="/" sx={{ ml: 2 }}>
+                Home
+                <HomeIcon sx={{ ml: 0.5 }} />
+              </Button>
+              <Button color="inherit" component={Link} href="/todo-list" sx={{ ml: 2 }}>
+                To-Do List
+                <ListIcon sx={{ ml: 0.5 }} />
+              </Button>
+              <Button color="inherit" component={Link} href="/notes" sx={{ ml: 2 }}>
+                Notes
+                <EditNoteIcon sx={{ ml: 0.5 }} />
+              </Button>
+            </Box>
+            <SignedOut>
+              <Button color="inherit" component={Link} href="/sign-up">Get Started</Button>
+              <Button color="inherit" component={Link} href="/sign-in">Sign In</Button>
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          </Toolbar>
+        </Container>
+      </AppBar>
+
+      {/* To-Do List Content */}
+      <Box sx={{ p: 2, maxWidth: 600, mx: 'auto', mt: 4 }}>
+        <Typography variant="h4" gutterBottom>
+          To-Do List
+        </Typography>
+        <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
+          <TextField
+            label="New Task"
+            value={newTask}
+            onChange={(e) => setNewTask(e.target.value)}
+            fullWidth
+          />
+          <FormControl sx={{ minWidth: 120 }}>
+            <InputLabel>Priority</InputLabel>
+            <Select
+              value={priority}
+              onChange={(e) => setPriority(e.target.value)}
+              label="Priority"
+            >
+              <MenuItem value="high">High</MenuItem>
+              <MenuItem value="medium">Medium</MenuItem>
+              <MenuItem value="low">Low</MenuItem>
+            </Select>
+          </FormControl>
+          <Button variant="contained" onClick={handleAddTask}>
+            Add
+          </Button>
+        </Box>
+        <Box sx={{ mb: 2 }}>
+          <FormControl sx={{ minWidth: 150 }}>
+            <InputLabel>Filter</InputLabel>
+            <Select
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              label="Filter"
+            >
+              <MenuItem value="all">All</MenuItem>
+              <MenuItem value="completed">Completed</MenuItem>
+              <MenuItem value="incomplete">Incomplete</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+        <List>
+          {filteredTasks.map((task, index) => (
+            <ListItem
+              key={index}
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                bgcolor: priorityColors[task.priority],
+                mb: 1,
+                borderRadius: 1,
+                color: 'white',
+              }}
+            >
+              {editingIndex === index ? (
+                <Box sx={{ display: 'flex', gap: 1, flex: 1 }}>
+                  <TextField
+                    value={editingTask}
+                    onChange={(e) => setEditingTask(e.target.value)}
+                    fullWidth
+                  />
+                  <IconButton onClick={handleSaveEdit}>
+                    <Check />
                   </IconButton>
                 </Box>
-              </>
-            )}
-          </ListItem>
-        ))}
-      </List>
+              ) : (
+                <>
+                  <ListItemText
+                    primary={task.text}
+                    secondary={`Priority: ${task.priority}`}
+                    sx={{
+                      textDecoration: task.completed ? 'line-through' : 'none',
+                    }}
+                  />
+                  <Box>
+                    <IconButton onClick={() => handleToggleComplete(index)}>
+                      {task.completed ? <Close /> : <Check />}
+                    </IconButton>
+                    <IconButton onClick={() => handleEditTask(index)}>
+                      <Edit />
+                    </IconButton>
+                    <IconButton onClick={() => handleDeleteTask(index)}>
+                      <Delete />
+                    </IconButton>
+                  </Box>
+                </>
+              )}
+            </ListItem>
+          ))}
+        </List>
+      </Box>
     </Box>
   );
 }
