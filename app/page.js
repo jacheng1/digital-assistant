@@ -144,12 +144,19 @@ export default function Home() {
               </Button>
             </Box>
           </Box>
-          <Image src={bot} alt="Bot Icon" />
+          <Box
+            sx={{
+              zIndex: 1
+            }}
+          >
+            <Image src={bot} alt="Bot" />
+          </Box>
         </Box>
       </Container>
       <Container maxWidth="lg">
         <Box
           sx={{
+            position: "relative",
             backgroundImage: `url(${weather_background.src})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
@@ -161,9 +168,34 @@ export default function Home() {
             alignItems: "flex-start",
             justifyContent: "center",
             height: "200px",
+            zIndex: 2
           }}
         >
-          <Typography variant="h6" sx={{ color: "#FFFFFF" }}>Placeholder</Typography>
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              padding: 2,
+              textAlign: "left",
+            }}
+          >
+            <Typography variant="h6" sx={{ color: "#FFFFFF" }}>Weather Icon</Typography>
+            <Typography variant="h3" sx={{ color: "#FFFFFF" }}>Temperature</Typography>
+            <Typography variant="h6" sx={{ color: "#FFFFFF" }}>Irvine, CA, USA</Typography>
+          </Box>
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: 0,
+              right: 0,
+              padding: 2,
+              textAlign: "right",
+            }}
+          >
+            <Typography variant="h6" sx={{ color: "#FFFFFF" }}>Time</Typography>
+            <Typography variant="h6" sx={{ color: "#FFFFFF" }}>Day</Typography>
+          </Box>
         </Box>
       </Container>
     </Box>
