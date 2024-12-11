@@ -28,13 +28,6 @@ import {
 import { Delete, Edit, Check, Close } from "@mui/icons-material";
 
 export default function TodoList() {
-  // State for managing tasks
-  const [tasks, setTasks] = useState([]); // Stores the list of tasks
-  const [newTask, setNewTask] = useState(''); // Input for a new task
-  const [priority, setPriority] = useState('medium'); // Priority level for a new task
-  const [editingIndex, setEditingIndex] = useState(null); // Tracks the index of the task being edited
-  const [editingTask, setEditingTask] = useState(''); // Stores the updated task during editing
-  const [filter, setFilter] = useState('all'); // Filter option for displaying tasks
   const [tasks, setTasks] = useState([]); // Stores the list of tasks
   const [newTask, setNewTask] = useState(""); // Input for a new task
   const [priority, setPriority] = useState("medium"); // Priority level for a new task
@@ -58,15 +51,6 @@ export default function TodoList() {
 
   // Add a new task to the list
   const handleAddTask = () => {
-    if (newTask.trim() === '') return alert('Task cannot be empty!'); // Validation
-    setTasks([...tasks, { text: newTask, completed: false, priority }]); // Add new task
-    setNewTask(''); // Reset the task input
-    setPriority('medium'); // Reset the priority to default
-  };
-
-  // Delete a task from the list
-  const handleDeleteTask = (index) => {
-    const updatedTasks = tasks.filter((_, i) => i !== index); // Filter out the deleted task
     if (newTask.trim() === "") {
       return alert("Task cannot be empty!");
     }
@@ -90,6 +74,7 @@ export default function TodoList() {
   // Delete a task from the list
   const handleDeleteTask = (index) => {
     const updatedTasks = tasks.filter((_, i) => i !== index); // Filter out the deleted task
+
     setTasks(updatedTasks);
   };
 
@@ -105,6 +90,7 @@ export default function TodoList() {
   // Start editing a task
   const handleEditTask = (index) => {
     setEditingIndex(index); // Track the index of the task being edited
+
     setEditingTask(tasks[index].text); // Populate the editing input with the current task text
   };
 
@@ -113,6 +99,7 @@ export default function TodoList() {
     const updatedTasks = tasks.map((task, i) =>
       i === editingIndex ? { ...task, text: editingTask } : task,
     );
+
     setTasks(updatedTasks); // Update the task list
     setEditingIndex(null); // Reset editing state
     setEditingTask(""); // Clear the editing input
@@ -120,9 +107,21 @@ export default function TodoList() {
 
   // Apply the selected filter to the task list
   const filteredTasks = tasks.filter((task) => {
-    if (filter === 'all') return true; // Show all tasks
-    if (filter === 'completed') return task.completed; // Show only completed tasks
-    if (filter === 'incomplete') return !task.completed; // Show only incomplete tasks
+    // Show all tasks
+    if (filter === "all") {
+      return true;
+    }
+
+    // Show only completed tasks
+    if (filter === "completed") {
+      return task.completed;
+    }
+
+    // Show only incomplete tasks
+    if (filter === "incomplete") {
+      return !task.completed;
+    }
+
     return false;
   });
 
@@ -152,7 +151,6 @@ export default function TodoList() {
       <AppBar position="static" sx={{ backgroundColor: "#5fc4d2" }}>
         <Container maxWidth="lg">
           <Toolbar>
-            {/* App Title and Navigation Links */}
             <Box display="flex" alignItems="center" sx={{ flexGrow: 1 }}>
               <Typography
                 variant="h5"
@@ -190,7 +188,6 @@ export default function TodoList() {
                 </Button>
               </Box>
             </Box>
-            {/* Sign In/Sign Out Buttons */}
             <SignedOut>
               <Button
                 color="inherit"
@@ -229,61 +226,43 @@ export default function TodoList() {
           </Toolbar>
         </Container>
       </AppBar>
-      {/* To-Do List Content */}
-      <Container sx={{ pt: 4, maxWidth: '800px', mx: 'auto' }}>
-        <Typography variant="h4" gutterBottom sx={{ color: '#000000' }}>
-          To-Do List
-        </Typography>
-        {/* Input for Adding a New Task */}
-        <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
-          <TextField
-            label="New Task"
-            value={newTask}
-            onChange={(e) => setNewTask(e.target.value)}
-            fullWidth
-            sx={{ bgcolor: '#ffffff', borderRadius: '4px' }}
-          />
-          {/* Dropdown for Task Priority */}
-          <FormControl sx={{ minWidth: 120, bgcolor: '#ffffff', borderRadius: '4px' }}>
-            <InputLabel>Priority</InputLabel>
-            <Select
-              value={priority}
-              onChange={(e) => setPriority(e.target.value)}
-              label="Priority"
+      <Container sx={{ pt: 4, maxWidth: "800px", mx: "auto" }}>
+        <Box
+          sx={{
+            backgroundColor: "#ffffff",
+            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+            borderRadius: "8px",
+            p: 3,
+          }}
+        >
+          <Typography variant="h4" gutterBottom sx={{ color: "#000000" }}>
+            To-Do List
+          </Typography>
+          <Box sx={{ display: "flex", gap: 1, mb: 2 }}>
+            <TextField
+              label="New Task"
+              value={newTask}
+              onChange={(e) => setNewTask(e.target.value)}
+              fullWidth
+              sx={{ bgcolor: "#ffffff", borderRadius: "4px" }}
+            />
+            <FormControl
+              sx={{ minWidth: 120, bgcolor: "#ffffff", borderRadius: "4px" }}
             >
-              <MenuItem value="high">High</MenuItem>
-              <MenuItem value="medium">Medium</MenuItem>
-              <MenuItem value="low">Low</MenuItem>
-            </Select>
-          </FormControl>
-          <Button
-            variant="contained"
-            onClick={handleAddTask}
-            sx={{ backgroundColor: '#5fc4d2', color: '#ffffff' }}
-          >
-            Add
-          </Button>
-        </Box>
-        {/* Filter Options for Viewing Tasks */}
-        <Box sx={{ mb: 2 }}>
-          <FormControl sx={{ minWidth: 150, bgcolor: '#ffffff', borderRadius: '4px' }}>
-            <InputLabel>Filter</InputLabel>
-            <Select
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-              label="Filter"
-            >
-              <MenuItem value="all">All</MenuItem>
-              <MenuItem value="completed">Completed</MenuItem>
-              <MenuItem value="incomplete">Incomplete</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-        {/* Display the List of Tasks */}
-        <List>
-          {filteredTasks.map((task, index) => (
-            <ListItem
-              key={index}
+              <InputLabel>Priority</InputLabel>
+              <Select
+                value={priority}
+                onChange={(e) => setPriority(e.target.value)}
+                label="Priority"
+              >
+                <MenuItem value="high">High</MenuItem>
+                <MenuItem value="medium">Medium</MenuItem>
+                <MenuItem value="low">Low</MenuItem>
+              </Select>
+            </FormControl>
+            <Button
+              variant="outlined"
+              onClick={handleAddTask}
               sx={{
                 color: "#5fc4d2",
                 borderColor: "#5fc4d2",
@@ -294,40 +273,48 @@ export default function TodoList() {
                 },
               }}
             >
-              {/* Editing Mode */}
-              {editingIndex === index ? (
-                <Box sx={{ display: 'flex', gap: 1, flex: 1 }}>
-                  <TextField
-                    value={editingTask}
-                    onChange={(e) => setEditingTask(e.target.value)}
-                    fullWidth
-                    sx={{ bgcolor: '#ffffff', borderRadius: '4px' }}
-                  />
-                  <IconButton onClick={handleSaveEdit}>
-                    <Check />
-                  </IconButton>
-                </Box>
-              ) : (
-                <>
-                  {/* Normal Display Mode */}
-                  <ListItemText
-                    primary={task.text}
-                    secondary={`Priority: ${task.priority}`}
-                    sx={{
-                      textDecoration: task.completed ? 'line-through' : 'none',
-                      color: '#000000',
-                    }}
-                  />
-                  {/* Task Actions: Complete, Edit, Delete */}
-                  <Box>
-                    <IconButton onClick={() => handleToggleComplete(index)}>
-                      {task.completed ? <Close /> : <Check />}
-                    </IconButton>
-                    <IconButton onClick={() => handleEditTask(index)}>
-                      <Edit />
-                    </IconButton>
-                    <IconButton onClick={() => handleDeleteTask(index)}>
-                      <Delete />
+              Add
+            </Button>
+          </Box>
+          <Box sx={{ mb: 2 }}>
+            <FormControl
+              sx={{ minWidth: 150, bgcolor: "#ffffff", borderRadius: "4px" }}
+            >
+              <InputLabel>Filter</InputLabel>
+              <Select
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+                label="Filter"
+              >
+                <MenuItem value="all">All</MenuItem>
+                <MenuItem value="completed">Completed</MenuItem>
+                <MenuItem value="incomplete">Incomplete</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+          <List>
+            {filteredTasks.map((task, index) => (
+              <ListItem
+                key={index}
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  bgcolor: priorityColors[task.priority],
+                  mb: 1,
+                  borderRadius: 1,
+                  color: "#000000",
+                }}
+              >
+                {editingIndex === index ? (
+                  <Box sx={{ display: "flex", gap: 1, flex: 1 }}>
+                    <TextField
+                      value={editingTask}
+                      onChange={(e) => setEditingTask(e.target.value)}
+                      fullWidth
+                      sx={{ bgcolor: "#ffffff", borderRadius: "4px" }}
+                    />
+                    <IconButton onClick={handleSaveEdit}>
+                      <Check />
                     </IconButton>
                   </Box>
                 ) : (
