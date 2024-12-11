@@ -37,6 +37,7 @@ export default function TodoList() {
   // Load tasks from localStorage on initial render
   useEffect(() => {
     const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
     setTasks(savedTasks);
   }, []);
 
@@ -47,15 +48,21 @@ export default function TodoList() {
 
   // Add a new task to the list
   const handleAddTask = () => {
-    if (newTask.trim() === '') return alert('Task cannot be empty!'); // Validation
+    if (newTask.trim() === '') {
+      return alert('Task cannot be empty!');
+    }
+
     setTasks([...tasks, { text: newTask, completed: false, priority }]); // Add new task
+
     setNewTask(''); // Reset the task input
+
     setPriority('medium'); // Reset the priority to default
   };
 
   // Delete a task from the list
   const handleDeleteTask = (index) => {
     const updatedTasks = tasks.filter((_, i) => i !== index); // Filter out the deleted task
+
     setTasks(updatedTasks);
   };
 
@@ -64,12 +71,14 @@ export default function TodoList() {
     const updatedTasks = tasks.map((task, i) =>
       i === index ? { ...task, completed: !task.completed } : task
     );
+
     setTasks(updatedTasks);
   };
 
   // Start editing a task
   const handleEditTask = (index) => {
     setEditingIndex(index); // Track the index of the task being edited
+
     setEditingTask(tasks[index].text); // Populate the editing input with the current task text
   };
 
@@ -78,6 +87,7 @@ export default function TodoList() {
     const updatedTasks = tasks.map((task, i) =>
       i === editingIndex ? { ...task, text: editingTask } : task
     );
+
     setTasks(updatedTasks); // Update the task list
     setEditingIndex(null); // Reset editing state
     setEditingTask(''); // Clear the editing input
@@ -85,26 +95,36 @@ export default function TodoList() {
 
   // Apply the selected filter to the task list
   const filteredTasks = tasks.filter((task) => {
-    if (filter === 'all') return true; // Show all tasks
-    if (filter === 'completed') return task.completed; // Show only completed tasks
-    if (filter === 'incomplete') return !task.completed; // Show only incomplete tasks
+    // Show all tasks
+    if (filter === 'all') {
+      return true;
+    }
+
+    // Show only completed tasks
+    if (filter === 'completed') {
+      return task.completed;
+    }
+
+    // Show only incomplete tasks
+    if (filter === 'incomplete') {
+      return !task.completed;
+    }
+
     return false;
   });
 
   // Define colors for task priority levels
   const priorityColors = {
-    high: '#ff6347', // Tomato Red
-    medium: '#ffcc00', // Yellow
-    low: '#90ee90', // Light Green
+    high: '#ff6347',
+    medium: '#ffcc00',
+    low: '#90ee90',
   };
 
   return (
     <Box sx={{ backgroundColor: '#ffffff', minHeight: '100vh', pb: 4 }}>
-      {/* Navigation Bar */}
       <AppBar position="static" sx={{ backgroundColor: '#5fc4d2' }}>
         <Container maxWidth="lg">
           <Toolbar>
-            {/* App Title and Navigation Links */}
             <Box display="flex" alignItems="center" sx={{ flexGrow: 1 }}>
               <Typography variant="h6" sx={{ color: '#ffffff' }}>
                 Zotmate - Digital Assistant for UCI
@@ -121,6 +141,8 @@ export default function TodoList() {
                 Notes
                 <EditNoteIcon sx={{ ml: 0.5 }} />
               </Button>
+            </Box>
+            <SignedOut>
               <Button color="inherit" component={Link} href="/sign-up" sx={{ color: '#ffffff' }}>
                 Get Started
               </Button>
@@ -134,13 +156,10 @@ export default function TodoList() {
           </Toolbar>
         </Container>
       </AppBar>
-
-      {/* To-Do List Content */}
       <Container sx={{ pt: 4, maxWidth: '800px', mx: 'auto' }}>
         <Typography variant="h4" gutterBottom sx={{ color: '#000000' }}>
           To-Do List
         </Typography>
-        {/* Input for Adding a New Task */}
         <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
           <TextField
             label="New Task"
@@ -149,7 +168,6 @@ export default function TodoList() {
             fullWidth
             sx={{ bgcolor: '#ffffff', borderRadius: '4px' }}
           />
-          {/* Dropdown for Task Priority */}
           <FormControl sx={{ minWidth: 120, bgcolor: '#ffffff', borderRadius: '4px' }}>
             <InputLabel>Priority</InputLabel>
             <Select
@@ -170,7 +188,6 @@ export default function TodoList() {
             Add
           </Button>
         </Box>
-        {/* Filter Options for Viewing Tasks */}
         <Box sx={{ mb: 2 }}>
           <FormControl sx={{ minWidth: 150, bgcolor: '#ffffff', borderRadius: '4px' }}>
             <InputLabel>Filter</InputLabel>
@@ -185,7 +202,6 @@ export default function TodoList() {
             </Select>
           </FormControl>
         </Box>
-        {/* Display the List of Tasks */}
         <List>
           {filteredTasks.map((task, index) => (
             <ListItem
@@ -199,7 +215,6 @@ export default function TodoList() {
                 color: '#000000',
               }}
             >
-              {/* Editing Mode */}
               {editingIndex === index ? (
                 <Box sx={{ display: 'flex', gap: 1, flex: 1 }}>
                   <TextField
@@ -214,7 +229,6 @@ export default function TodoList() {
                 </Box>
               ) : (
                 <>
-                  {/* Normal Display Mode */}
                   <ListItemText
                     primary={task.text}
                     secondary={`Priority: ${task.priority}`}
@@ -223,7 +237,6 @@ export default function TodoList() {
                       color: '#000000',
                     }}
                   />
-                  {/* Task Actions: Complete, Edit, Delete */}
                   <Box>
                     <IconButton onClick={() => handleToggleComplete(index)}>
                       {task.completed ? <Close /> : <Check />}
