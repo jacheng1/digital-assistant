@@ -22,6 +22,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 
@@ -33,6 +35,8 @@ export default function Notes() {
   const [editingTitle, setEditingTitle] = useState(''); // Title of the note being edited
   const [editingContent, setEditingContent] = useState(''); // Content of the note being edited
   const [isDialogOpen, setIsDialogOpen] = useState(false); // Controls the visibility of the edit dialog
+  const [snackbarOpen, setSnackbarOpen] = useState(false); // Controls Snackbar visibility
+  const [snackbarMessage, setSnackbarMessage] = useState(""); // Message for the Snackbar
 
   // Load notes from localStorage when the component mounts
   useEffect(() => {
@@ -63,6 +67,17 @@ export default function Notes() {
     // Clear input fields
     setNewNoteTitle('');
     setNewNoteContent('');
+
+    // Show the Snackbar notification
+    setSnackbarMessage("Note added successfully!");
+    setSnackbarOpen(true);
+  };
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
   };
 
   // Function to delete a note
@@ -99,6 +114,20 @@ export default function Notes() {
 
   return (
     <Box sx={{ backgroundColor: '#ffffff', minHeight: '100vh', pb: 4 }}>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
       <AppBar position="static" sx={{ backgroundColor: "#5fc4d2" }}>
         <Container maxWidth="lg">
           <Toolbar>
