@@ -26,34 +26,40 @@ import {
 import { Delete, Edit, Check, Close } from '@mui/icons-material';
 
 export default function TodoList() {
-  const [tasks, setTasks] = useState([]);
-  const [newTask, setNewTask] = useState('');
-  const [priority, setPriority] = useState('medium');
-  const [editingIndex, setEditingIndex] = useState(null);
-  const [editingTask, setEditingTask] = useState('');
-  const [filter, setFilter] = useState('all');
+  // State for managing tasks
+  const [tasks, setTasks] = useState([]); // Stores the list of tasks
+  const [newTask, setNewTask] = useState(''); // Input for a new task
+  const [priority, setPriority] = useState('medium'); // Priority level for a new task
+  const [editingIndex, setEditingIndex] = useState(null); // Tracks the index of the task being edited
+  const [editingTask, setEditingTask] = useState(''); // Stores the updated task during editing
+  const [filter, setFilter] = useState('all'); // Filter option for displaying tasks
 
+  // Load tasks from localStorage on initial render
   useEffect(() => {
     const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
     setTasks(savedTasks);
   }, []);
 
+  // Save tasks to localStorage whenever the tasks array changes
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }, [tasks]);
 
+  // Add a new task to the list
   const handleAddTask = () => {
-    if (newTask.trim() === '') return alert('Task cannot be empty!');
-    setTasks([...tasks, { text: newTask, completed: false, priority }]);
-    setNewTask('');
-    setPriority('medium');
+    if (newTask.trim() === '') return alert('Task cannot be empty!'); // Validation
+    setTasks([...tasks, { text: newTask, completed: false, priority }]); // Add new task
+    setNewTask(''); // Reset the task input
+    setPriority('medium'); // Reset the priority to default
   };
 
+  // Delete a task from the list
   const handleDeleteTask = (index) => {
-    const updatedTasks = tasks.filter((_, i) => i !== index);
+    const updatedTasks = tasks.filter((_, i) => i !== index); // Filter out the deleted task
     setTasks(updatedTasks);
   };
 
+  // Toggle the completion status of a task
   const handleToggleComplete = (index) => {
     const updatedTasks = tasks.map((task, i) =>
       i === index ? { ...task, completed: !task.completed } : task
@@ -61,27 +67,31 @@ export default function TodoList() {
     setTasks(updatedTasks);
   };
 
+  // Start editing a task
   const handleEditTask = (index) => {
-    setEditingIndex(index);
-    setEditingTask(tasks[index].text);
+    setEditingIndex(index); // Track the index of the task being edited
+    setEditingTask(tasks[index].text); // Populate the editing input with the current task text
   };
 
+  // Save the updated task after editing
   const handleSaveEdit = () => {
     const updatedTasks = tasks.map((task, i) =>
       i === editingIndex ? { ...task, text: editingTask } : task
     );
-    setTasks(updatedTasks);
-    setEditingIndex(null);
-    setEditingTask('');
+    setTasks(updatedTasks); // Update the task list
+    setEditingIndex(null); // Reset editing state
+    setEditingTask(''); // Clear the editing input
   };
 
+  // Apply the selected filter to the task list
   const filteredTasks = tasks.filter((task) => {
-    if (filter === 'all') return true;
-    if (filter === 'completed') return task.completed;
-    if (filter === 'incomplete') return !task.completed;
+    if (filter === 'all') return true; // Show all tasks
+    if (filter === 'completed') return task.completed; // Show only completed tasks
+    if (filter === 'incomplete') return !task.completed; // Show only incomplete tasks
     return false;
   });
 
+  // Define colors for task priority levels
   const priorityColors = {
     high: '#ff6347', // Tomato Red
     medium: '#ffcc00', // Yellow
@@ -94,6 +104,7 @@ export default function TodoList() {
       <AppBar position="static" sx={{ backgroundColor: '#5fc4d2' }}>
         <Container maxWidth="lg">
           <Toolbar>
+            {/* App Title and Navigation Links */}
             <Box display="flex" alignItems="center" sx={{ flexGrow: 1 }}>
               <Typography variant="h6" sx={{ color: '#ffffff' }}>
                 Zotmate - Digital Assistant for UCI
@@ -110,8 +121,6 @@ export default function TodoList() {
                 Notes
                 <EditNoteIcon sx={{ ml: 0.5 }} />
               </Button>
-            </Box>
-            <SignedOut>
               <Button color="inherit" component={Link} href="/sign-up" sx={{ color: '#ffffff' }}>
                 Get Started
               </Button>
@@ -131,6 +140,7 @@ export default function TodoList() {
         <Typography variant="h4" gutterBottom sx={{ color: '#000000' }}>
           To-Do List
         </Typography>
+        {/* Input for Adding a New Task */}
         <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
           <TextField
             label="New Task"
@@ -139,6 +149,7 @@ export default function TodoList() {
             fullWidth
             sx={{ bgcolor: '#ffffff', borderRadius: '4px' }}
           />
+          {/* Dropdown for Task Priority */}
           <FormControl sx={{ minWidth: 120, bgcolor: '#ffffff', borderRadius: '4px' }}>
             <InputLabel>Priority</InputLabel>
             <Select
@@ -159,6 +170,7 @@ export default function TodoList() {
             Add
           </Button>
         </Box>
+        {/* Filter Options for Viewing Tasks */}
         <Box sx={{ mb: 2 }}>
           <FormControl sx={{ minWidth: 150, bgcolor: '#ffffff', borderRadius: '4px' }}>
             <InputLabel>Filter</InputLabel>
@@ -173,6 +185,7 @@ export default function TodoList() {
             </Select>
           </FormControl>
         </Box>
+        {/* Display the List of Tasks */}
         <List>
           {filteredTasks.map((task, index) => (
             <ListItem
@@ -186,6 +199,7 @@ export default function TodoList() {
                 color: '#000000',
               }}
             >
+              {/* Editing Mode */}
               {editingIndex === index ? (
                 <Box sx={{ display: 'flex', gap: 1, flex: 1 }}>
                   <TextField
@@ -200,6 +214,7 @@ export default function TodoList() {
                 </Box>
               ) : (
                 <>
+                  {/* Normal Display Mode */}
                   <ListItemText
                     primary={task.text}
                     secondary={`Priority: ${task.priority}`}
@@ -208,6 +223,7 @@ export default function TodoList() {
                       color: '#000000',
                     }}
                   />
+                  {/* Task Actions: Complete, Edit, Delete */}
                   <Box>
                     <IconButton onClick={() => handleToggleComplete(index)}>
                       {task.completed ? <Close /> : <Check />}
