@@ -83,35 +83,41 @@ export default function TodoList() {
   });
 
   const priorityColors = {
-    high: 'red',
-    medium: 'orange',
-    low: 'green',
+    high: '#ff6347', // Tomato Red
+    medium: '#ffcc00', // Yellow
+    low: '#90ee90', // Light Green
   };
 
   return (
-    <Box>
+    <Box sx={{ backgroundColor: '#ffffff', minHeight: '100vh', pb: 4 }}>
       {/* Navigation Bar */}
-      <AppBar position="static">
+      <AppBar position="static" sx={{ backgroundColor: '#5fc4d2' }}>
         <Container maxWidth="lg">
           <Toolbar>
             <Box display="flex" alignItems="center" sx={{ flexGrow: 1 }}>
-              <Typography variant="h6">Zotmate - Digital Assistant for UCI</Typography>
-              <Button color="inherit" component={Link} href="/" sx={{ ml: 2 }}>
+              <Typography variant="h6" sx={{ color: '#ffffff' }}>
+                Zotmate - Digital Assistant for UCI
+              </Typography>
+              <Button color="inherit" component={Link} href="/" sx={{ ml: 2, color: '#ffffff' }}>
                 Home
                 <HomeIcon sx={{ ml: 0.5 }} />
               </Button>
-              <Button color="inherit" component={Link} href="/todo-list" sx={{ ml: 2 }}>
+              <Button color="inherit" component={Link} href="/todo-list" sx={{ ml: 2, color: '#ffffff' }}>
                 To-Do List
                 <ListIcon sx={{ ml: 0.5 }} />
               </Button>
-              <Button color="inherit" component={Link} href="/notes" sx={{ ml: 2 }}>
+              <Button color="inherit" component={Link} href="/notes" sx={{ ml: 2, color: '#ffffff' }}>
                 Notes
                 <EditNoteIcon sx={{ ml: 0.5 }} />
               </Button>
             </Box>
             <SignedOut>
-              <Button color="inherit" component={Link} href="/sign-up">Get Started</Button>
-              <Button color="inherit" component={Link} href="/sign-in">Sign In</Button>
+              <Button color="inherit" component={Link} href="/sign-up" sx={{ color: '#ffffff' }}>
+                Get Started
+              </Button>
+              <Button color="inherit" component={Link} href="/sign-in" sx={{ color: '#ffffff' }}>
+                Sign In
+              </Button>
             </SignedOut>
             <SignedIn>
               <UserButton />
@@ -121,8 +127,8 @@ export default function TodoList() {
       </AppBar>
 
       {/* To-Do List Content */}
-      <Box sx={{ p: 2, maxWidth: 600, mx: 'auto', mt: 4 }}>
-        <Typography variant="h4" gutterBottom>
+      <Container sx={{ pt: 4, maxWidth: '800px', mx: 'auto' }}>
+        <Typography variant="h4" gutterBottom sx={{ color: '#000000' }}>
           To-Do List
         </Typography>
         <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
@@ -131,8 +137,9 @@ export default function TodoList() {
             value={newTask}
             onChange={(e) => setNewTask(e.target.value)}
             fullWidth
+            sx={{ bgcolor: '#ffffff', borderRadius: '4px' }}
           />
-          <FormControl sx={{ minWidth: 120 }}>
+          <FormControl sx={{ minWidth: 120, bgcolor: '#ffffff', borderRadius: '4px' }}>
             <InputLabel>Priority</InputLabel>
             <Select
               value={priority}
@@ -144,12 +151,16 @@ export default function TodoList() {
               <MenuItem value="low">Low</MenuItem>
             </Select>
           </FormControl>
-          <Button variant="contained" onClick={handleAddTask}>
+          <Button
+            variant="contained"
+            onClick={handleAddTask}
+            sx={{ backgroundColor: '#5fc4d2', color: '#ffffff' }}
+          >
             Add
           </Button>
         </Box>
         <Box sx={{ mb: 2 }}>
-          <FormControl sx={{ minWidth: 150 }}>
+          <FormControl sx={{ minWidth: 150, bgcolor: '#ffffff', borderRadius: '4px' }}>
             <InputLabel>Filter</InputLabel>
             <Select
               value={filter}
@@ -172,7 +183,7 @@ export default function TodoList() {
                 bgcolor: priorityColors[task.priority],
                 mb: 1,
                 borderRadius: 1,
-                color: 'white',
+                color: '#000000',
               }}
             >
               {editingIndex === index ? (
@@ -181,6 +192,7 @@ export default function TodoList() {
                     value={editingTask}
                     onChange={(e) => setEditingTask(e.target.value)}
                     fullWidth
+                    sx={{ bgcolor: '#ffffff', borderRadius: '4px' }}
                   />
                   <IconButton onClick={handleSaveEdit}>
                     <Check />
@@ -193,6 +205,7 @@ export default function TodoList() {
                     secondary={`Priority: ${task.priority}`}
                     sx={{
                       textDecoration: task.completed ? 'line-through' : 'none',
+                      color: '#000000',
                     }}
                   />
                   <Box>
@@ -211,7 +224,7 @@ export default function TodoList() {
             </ListItem>
           ))}
         </List>
-      </Box>
+      </Container>
     </Box>
   );
 }
