@@ -107,25 +107,36 @@ export default function TodoList() {
                 <ListIcon sx={{ ml: 0.5 }} />
               </Button>
               <Button color="inherit" component={Link} href="/notes" sx={{ ml: 2, color: '#ffffff' }}>
-                Notes
-                <EditNoteIcon sx={{ ml: 0.5 }} />
+              <Typography variant="h6">
+                Zotmate - Digital Assistant for UCI
+              </Typography>
+              <Button color="inherit" component={Link} href="/" sx={{ ml: 2 }}>
+                Home
+                <HomeIcon sx={{ ml: 0.5 }} />
               </Button>
-            </Box>
-            <SignedOut>
+              <Button
+                color="inherit"
+                component={Link}
+                href="/todo-list"
+                sx={{ ml: 2 }}
+              >
+                To-Do List
+                <ListIcon sx={{ ml: 0.5 }} />
+              </Button>
+              <Button
+                color="inherit"
+                component={Link}
+                href="/notes"
+                sx={{ ml: 2 }}
+              >
               <Button color="inherit" component={Link} href="/sign-up" sx={{ color: '#ffffff' }}>
                 Get Started
               </Button>
               <Button color="inherit" component={Link} href="/sign-in" sx={{ color: '#ffffff' }}>
-                Sign In
+              <Button color="inherit" component={Link} href="/sign-up">
+                Get Started
               </Button>
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-          </Toolbar>
-        </Container>
-      </AppBar>
-
+              <Button color="inherit" component={Link} href="/sign-in">
       {/* To-Do List Content */}
       <Container sx={{ pt: 4, maxWidth: '800px', mx: 'auto' }}>
         <Typography variant="h4" gutterBottom sx={{ color: '#000000' }}>
