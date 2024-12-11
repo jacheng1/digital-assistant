@@ -25,7 +25,8 @@ import bot from "./assets/bot.png";
 import weather_background from "./assets/weather_background.png";
 
 export default function Home() {
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const [currentTime, setCurrentTime] = useState(new Date()); // State for time
+  // State for weather
   const [weather, setWeather] = useState({
     temp: null,
     icon: null,
@@ -33,6 +34,7 @@ export default function Home() {
     location: "Irvine, CA",
   });
 
+  // define all possible weather icons
   const allIcons = {
     "clear sky": WbSunnyIcon,
     "few clouds": WbCloudyIcon,
@@ -57,11 +59,13 @@ export default function Home() {
   useEffect(() => {
     const fetchWeather = async () => {
       try {
+        // Fetch response in JSON format
         const response = await fetch(
           `https://api.openweathermap.org/data/2.5/weather?q=Irvine&units=metric&appid=e5c2dc988602e61cb6990f904e66f52a`,
         );
         const data = await response.json();
 
+        // If response is invalid, display error alert
         if (!response.ok) {
           alert(data.message);
 
@@ -70,6 +74,7 @@ export default function Home() {
 
         const icon = allIcons[data.weather[0].description] || WbSunnyIcon;
 
+        // set state using retrieved JSON data
         setWeather({
           temp: Math.floor(data.main.temp),
           icon: icon,
