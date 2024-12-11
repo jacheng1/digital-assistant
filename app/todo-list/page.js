@@ -28,7 +28,6 @@ import {
 import { Delete, Edit, Check, Close } from "@mui/icons-material";
 
 export default function TodoList() {
-  // State for managing tasks
   const [tasks, setTasks] = useState([]); // Stores the list of tasks
   const [newTask, setNewTask] = useState(""); // Input for a new task
   const [priority, setPriority] = useState("medium"); // Priority level for a new task
