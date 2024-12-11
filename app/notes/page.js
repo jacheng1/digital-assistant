@@ -26,7 +26,6 @@ import {
 import { Delete, Edit } from '@mui/icons-material';
 
 export default function Notes() {
-  // State variables for managing notes
   const [notes, setNotes] = useState([]); // Array to store all notes
   const [newNoteTitle, setNewNoteTitle] = useState(''); // Title for a new note
   const [newNoteContent, setNewNoteContent] = useState(''); // Content for a new note
@@ -100,32 +99,75 @@ export default function Notes() {
 
   return (
     <Box sx={{ backgroundColor: '#ffffff', minHeight: '100vh', pb: 4 }}>
-      {/* Navigation Bar */}
-      <AppBar position="static" sx={{ backgroundColor: '#5fc4d2' }}>
+      <AppBar position="static" sx={{ backgroundColor: "#5fc4d2" }}>
         <Container maxWidth="lg">
           <Toolbar>
             <Box display="flex" alignItems="center" sx={{ flexGrow: 1 }}>
-              <Typography variant="h6" sx={{ color: '#ffffff' }}>
-                Zotmate - Digital Assistant for UCI
+              <Typography
+                variant="h5"
+                sx={{ color: "#ffffff", fontWeight: "bold" }}
+              >
+                ZotMate
               </Typography>
-              <Button color="inherit" component={Link} href="/" sx={{ ml: 2, color: '#ffffff' }}>
-                Home
-                <HomeIcon sx={{ ml: 0.5 }} />
-              </Button>
-              <Button color="inherit" component={Link} href="/todo-list" sx={{ ml: 2, color: '#ffffff' }}>
-                To-Do List
-                <ListIcon sx={{ ml: 0.5 }} />
-              </Button>
-              <Button color="inherit" component={Link} href="/notes" sx={{ ml: 2, color: '#ffffff' }}>
-                Notes
-                <EditNoteIcon sx={{ ml: 0.5 }} />
-              </Button>
+              <Box sx={{ marginLeft: 15, display: "flex", gap: 3 }}>
+                <Button
+                  color="inherit"
+                  component={Link}
+                  href="/"
+                  sx={{ color: "#FFFFFF", fontWeight: "bold" }}
+                >
+                  Home
+                  <HomeIcon sx={{ ml: 0.5 }} />
+                </Button>
+                <Button
+                  color="inherit"
+                  component={Link}
+                  href="/todo-list"
+                  sx={{ color: "#FFFFFF", fontWeight: "bold" }}
+                >
+                  To-Do List
+                  <ListIcon sx={{ ml: 0.5 }} />
+                </Button>
+                <Button
+                  color="inherit"
+                  component={Link}
+                  href="/notes"
+                  sx={{ color: "#FFFFFF", fontWeight: "bold" }}
+                >
+                  Notes
+                  <EditNoteIcon sx={{ ml: 0.5 }} />
+                </Button>
+              </Box>
             </Box>
             <SignedOut>
-              <Button color="inherit" component={Link} href="/sign-up" sx={{ color: '#ffffff' }}>
+              <Button
+                color="inherit"
+                component={Link}
+                href="/sign-up"
+                sx={{
+                  ml: 2,
+                  borderRadius: "8px",
+                  paddingTop: 1.5,
+                  paddingBottom: 1.5,
+                  paddingLeft: 3,
+                  paddingRight: 3,
+                }}
+              >
                 Get Started
               </Button>
-              <Button color="inherit" component={Link} href="/sign-in" sx={{ color: '#ffffff' }}>
+              <Button
+                color="inherit"
+                component={Link}
+                href="/sign-in"
+                sx={{
+                  ml: 2,
+                  borderRadius: "8px",
+                  paddingTop: 1.5,
+                  paddingBottom: 1.5,
+                  paddingLeft: 3,
+                  paddingRight: 3,
+                }}
+              >
                 Sign In
               </Button>
             </SignedOut>
@@ -135,83 +177,91 @@ export default function Notes() {
           </Toolbar>
         </Container>
       </AppBar>
-
-      {/* Notes Content */}
       <Container sx={{ pt: 4, maxWidth: '800px', mx: 'auto' }}>
-        <Typography variant="h4" gutterBottom sx={{ color: '#000000' }}>
-          Notes
-        </Typography>
-        <Box sx={{ mb: 2 }}>
-          {/* Input fields for adding a new note */}
-          <TextField
-            label="Title"
-            value={newNoteTitle}
-            onChange={(e) => setNewNoteTitle(e.target.value)}
-            fullWidth
-            sx={{ bgcolor: '#ffffff', mb: 2 }}
-          />
-          <TextField
-            label="Content"
-            value={newNoteContent}
-            onChange={(e) => setNewNoteContent(e.target.value)}
-            fullWidth
-            multiline
-            rows={4}
-            sx={{ bgcolor: '#ffffff', mb: 2 }}
-          />
-          <Button
-            variant="contained"
-            onClick={handleAddNote}
-            sx={{ backgroundColor: '#5fc4d2', color: '#ffffff' }}
-          >
-            Add Note
-          </Button>
-        </Box>
-        {/* Display the list of notes */}
-        <List>
-          {notes.map((note, index) => (
-            <ListItem
-              key={index}
+        <Box
+          sx={{
+            backgroundColor: "#ffffff",
+            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+            borderRadius: "8px",
+            p: 3,
+          }}
+        >
+          <Typography variant="h4" gutterBottom sx={{ color: '#000000' }}>
+            Notes
+          </Typography>
+          <Box sx={{ mb: 2 }}>
+            <TextField
+              label="Title"
+              value={newNoteTitle}
+              onChange={(e) => setNewNoteTitle(e.target.value)}
+              fullWidth
+              sx={{ bgcolor: '#ffffff', mb: 2 }}
+            />
+            <TextField
+              label="Content"
+              value={newNoteContent}
+              onChange={(e) => setNewNoteContent(e.target.value)}
+              fullWidth
+              multiline
+              rows={4}
+              sx={{ bgcolor: '#ffffff', mb: 2 }}
+            />
+            <Button
+              variant="outlined"
+              onClick={handleAddNote}
               sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                bgcolor: '#f0f0f0',
-                mb: 1,
-                borderRadius: 1,
+                color: '#5fc4d2',
+                borderColor: "#5fc4d2",
+                borderRadius: "8px",
+                padding: 1.5,
+                "&:hover": {
+                  color: "#FFFFFF",
+                  backgroundColor: "#5fc4d2",
+                },
               }}
             >
-              {/* Display note details */}
-              <ListItemText
-                primary={note.title}
-                secondary={`${note.content} (Created on: ${note.date})`}
-              />
-              <Box>
-                {/* Buttons for editing and deleting a note */}
-                <IconButton onClick={() => handleEditNote(index)}>
-                  <Edit />
-                </IconButton>
-                <IconButton onClick={() => handleDeleteNote(index)}>
-                  <Delete />
-                </IconButton>
-              </Box>
-            </ListItem>
-          ))}
-        </List>
+              Add Note
+            </Button>
+          </Box>
+          <List>
+            {notes.map((note, index) => (
+              <ListItem
+                key={index}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  bgcolor: '#f0f0f0',
+                  mb: 1,
+                  borderRadius: 1,
+                }}
+              >
+                <ListItemText
+                  primary={note.title}
+                  secondary={`${note.content} (Created on: ${note.date})`}
+                />
+                <Box>
+                  <IconButton onClick={() => handleEditNote(index)}>
+                    <Edit />
+                  </IconButton>
+                  <IconButton onClick={() => handleDeleteNote(index)}>
+                    <Delete />
+                  </IconButton>
+                </Box>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
       </Container>
-
-      {/* Edit Note Dialog */}
       <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
         <DialogTitle>Edit Note</DialogTitle>
         <DialogContent>
-          {/* Input field for editing the title */}
           <TextField
             label="Title"
             value={editingTitle}
             onChange={(e) => setEditingTitle(e.target.value)}
             fullWidth
-            sx={{ mb: 2, bgcolor: '#ffffff' }} // Added background color and spacing
+            sx={{ mb: 2, bgcolor: '#ffffff' }}
           />
-          {/* Input field for editing the content */}
           <TextField
             label="Content"
             value={editingContent}
@@ -219,12 +269,10 @@ export default function Notes() {
             fullWidth
             multiline
             rows={4}
-            sx={{ bgcolor: '#ffffff' }} // Added background color
+            sx={{ bgcolor: '#ffffff' }}
           />
         </DialogContent>
-        
         <DialogActions>
-          {/* Buttons to save or cancel editing */}
           <Button onClick={handleSaveEdit} sx={{ backgroundColor: '#5fc4d2', color: '#ffffff' }}>
             Save
           </Button>
